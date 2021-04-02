@@ -1,0 +1,25 @@
+.topbar{
+    height: 50px;
+    line-height: 50px;
+    background-color: #249f66;
+    color: #fbfbfb;
+    width: 100%;
+}
+.topbar__more a{
+    text-decoration: none;
+    color: #fbfbfb;
+    display: inline-block;
+}
+.topbar__contact p:hover ,.topbar__more p:hover{
+    color: #a9ffd0;
+    cursor: pointer;
+}
+.index{
+    background-color: tomato;
+    border-radius: 100%;
+    padding: 0 5px;
+    font-size: 13px;
+    position: relative;
+    top:-10px;
+    margin-left: 3px;
+}
