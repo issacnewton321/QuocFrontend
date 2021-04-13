@@ -5,7 +5,7 @@ export default function Commit(){
         <div className='container'>
             <div className='row text-center'>
                 <div class="col-12">
-                    <h3 className='list-item__header'>COMMIT</h3>
+                    <h3 className='list-item__header'>CAM KẾT</h3>
                 </div>
                 <div className='col-sm-12 col-md-6 col-lg-4'>
                     <div className='row'>

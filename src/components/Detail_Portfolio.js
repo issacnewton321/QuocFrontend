@@ -1,5 +1,6 @@
-import React from 'react'
+
 import './Detail_Portfolio.css'
+
 export default function Detail_Portfolio(){
     return (
         <div className='Detail_Portfolio'>

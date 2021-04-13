@@ -1,14 +1,52 @@
 import React,{useState} from 'react'
 import './Admin.css'
 import SanphamWorkplace from './SanphamWorkplace'
+import DanhMucWorkplace from './DanhMucWorkplace'
+import KhachhangWorkplace from './KhachhangWorkplace'
+import NhanvienWorkplace from './NhanvienWorkplace'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    useLocation,
+    Link,
+    useParams,
+    useHistory
+  } from "react-router-dom";
 
 function Admin(){
+    let history = useHistory();
+    let myStore = window.localStorage
+    let {adminPage} = useParams();
     const [slide,setSlide] = useState(true)
+    let Page = '';
+    switch(adminPage){
+        case 'sanpham':{
+            Page = <SanphamWorkplace slide={slide}/>
+            break;
+        }
+        case 'index':{
+            Page = <div style={{maxWidth:'85%',height:'92vh'}}><img src="https://i.pinimg.com/originals/3b/8a/d2/3b8ad2c7b1be2caf24321c852103598a.jpg" alt="picture" style={{width:'100%',height:'100%',overflowY:'hidden'}}/></div>
+            break;
+        }
+        case 'danhmuc':{
+            Page = <DanhMucWorkplace slide={slide}/>
+            break;
+        }
+        case 'khachhang':{
+            Page = <KhachhangWorkplace slide={slide}/>
+            break;
+        }
+        case 'nhanvien':{
+            Page = <NhanvienWorkplace slide={slide}/>
+            break;
+        }
+    }
     return(
         <div>
             <div className='header-admin'>       
-                <h3 className="logo-admin"><span className="slide-button" onClick={toggleSlide}><i className="fa fa-bars" aria-hidden="true"></i></span>Quản lý kho <span className="logo-name">VẬT TƯ</span></h3>
-                <a href="#" className="logout"><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+                <h3 className="logo-admin"><span className="slide-button" onClick={toggleSlide}><i className="fa fa-bars" aria-hidden="true"></i></span>Quản lý kho <span className="logo-name">FAS ENTERPRISE</span></h3>
+                <p onClick={()=>{myStore.removeItem('user'); myStore.removeItem('jwt') ; history.push("/")}} className="logout"><i className="fa fa-sign-out" aria-hidden="true"></i>Đăng xuất</p>
             </div>
             <div className='body-admin'>
                 <div className={slide?"slide-bar":'slide-bar on-off'}  >
@@ -19,14 +57,15 @@ function Admin(){
                         <h4 className="employee-name">Trần Hồng Quân</h4>
                     </div>
                     <div className={slide?"slide-bar_list":"slide-bar_list on-off-menu"}>
-                        <a href="#"><i className="fa fa-list-alt" aria-hidden="true"></i><span className="ml-2" >Danh sách sản phẩm</span></a>
-                        <a href="#"><i className="fa fa-users" aria-hidden="true"></i><span className="ml-2">Danh sách người dùng</span></a>
-                        <a href="#"><i className="fa fa-calendar-check-o" aria-hidden="true"></i><span className="ml-2">Danh sách hóa đơn</span></a>
-                        <a href="#"><i className="fa fa-calendar" aria-hidden="true"></i><span className="ml-2">Thống kê</span></a>
-                        <a href="#"><i className="fa fa-sign-out" aria-hidden="true"></i><span className="ml-2">Thoát</span></a>
+                        <Link to="/admin/sanpham"><p><i className="fa fa-list-alt" aria-hidden="true"></i><span className="ml-2" >Danh sách sản phẩm</span></p></Link>
+                        <Link to="/admin/danhmuc"><p><i className="fa fa-users" aria-hidden="true"></i><span className="ml-2">Danh sách danh mục</span></p></Link>
+                        <Link to="/admin/khachhang"><p><i className="fa fa-calendar-check-o" aria-hidden="true"></i><span className="ml-2">Danh sách khách hàng</span></p></Link>
+                        <Link to="/admin/nhanvien"><p><i className="fa fa-calendar" aria-hidden="true"></i><span className="ml-2">Danh sách nhân viên</span></p></Link>
+                        <Link to="/admin/sanpham"><p><i className="fa fa-sign-out" aria-hidden="true"></i><span className="ml-2">Thoát</span></p></Link>
                     </div>
+                    
                 </div>
-                <SanphamWorkplace slide={slide}/> 
+                {Page}
             </div>
         </div>       
     )

@@ -14,8 +14,9 @@
     border-bottom: none;
 }
 .myItem{
-    padding: 20px 0;
-    
+    padding: 20px 0px;
+    transition: all 0.5s;
+
 }
 .page-link{
     color: #448000 !important;
@@ -23,4 +24,14 @@
 .card {
     margin: 0 auto; /* Added */
     float: none; /* Added */
+}
+.card-body{
+    height: 200px;
+    transition: all 0.3s;
+}
+.card-body:hover{
+    cursor: pointer;
+    color: #448000;
+    font-size: 18px;
+    background-color: #d7d8d6;
 }

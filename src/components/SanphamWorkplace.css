@@ -15,3 +15,7 @@
 .custom {
     width: 100px;
 }
+.thead-success{
+    background-color: #4369d7;
+    color: white;
+}

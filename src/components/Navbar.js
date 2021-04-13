@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import logo from './logo.png'
 import './Navbar.css'
 import {
@@ -7,7 +7,14 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import axios from 'axios'
 function Navbar(){
+    const [danhmuc,setDanhMuc] = useState(null);
+    useEffect(()=>{
+      axios.get(process.env.REACT_APP_API+'danhmuc/')
+      .then(response => setDanhMuc(response.data))
+      .catch(error => console.log(error))
+    },[])
     return(
       
        <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -21,7 +28,7 @@ function Navbar(){
           </a>
          </Link>
         <form className='search input-group'>
-            <input className='form-control' placeholder='Enter here to find more item . . .'/>
+            <input className='form-control' placeholder='Nhập để tìm kiếm . . .'/>
             <div className="input-group-append">
                 <button className='btn btn-success'><i className="fa fa-search" aria-hidden="true"></i></button>
             </div>
@@ -32,20 +39,23 @@ function Navbar(){
                <div className="collapse navbar-collapse" id="navbarText">
                  <ul className="navbar-nav ml-auto">
                    <li className="nav-item">
-                     <a className='nav-link'>HOME</a>
+                     <a className='nav-link'>TRANG CHỦ</a>
                    </li>
                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">PRODUCT PORTFOLIO</a>
+                        <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">DANH MỤC</a>
                             <div className="dropdown-menu">
-                                 <a className="dropdown-item" href="#">FLOWERS</a>
-                                 <a className="dropdown-item" href="#">SEEDS</a>
+                                 {danhmuc?.map(dm=>{
+                                   return (
+                                    <Link to = {"/danhmuc/"+dm.madm}><p className="dropdown-item">{dm.tendm}</p></Link>
+                                   )
+                                 })}
                             </div>
                    </li>
                    <li className="nav-item">
-                     <a className='nav-link'>CONTACT</a>
+                     <a className='nav-link'>LIÊN HỆ</a>
                    </li>
                    <li className="nav-item">
-                     <a className='nav-link'>ABOUT</a>
+                     <a className='nav-link'>TÌM HIỂU</a>
                    </li>
                  </ul>
                  

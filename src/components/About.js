@@ -8,7 +8,7 @@ export default function About(){
             <div className='container'>
             <div className="row about text-center" id="about">
                 <div className="col-12">
-                    <h3 className='list-item__header'>ABOUT ME</h3>
+                    <h3 className='list-item__header'>GIỚI THIỆU</h3>
                 </div>
                 <div className="col-12 row about-body">
                     <div className="col-sm-3">

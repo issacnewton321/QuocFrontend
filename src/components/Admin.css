@@ -35,15 +35,16 @@
 .slide-bar_list{
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
+    margin-top: 35px;
 }
-.slide-bar_list a{
+.slide-bar_list p{
     display: block;
-    padding: 15px 20px;
+    margin: 0;
+    padding: 17px 20px;
     text-decoration: none;
     color: white;
 }
-.slide-bar_list a:hover{
+.slide-bar_list p:hover{
     color: white;
     background-color: #4077a5;
     text-decoration: none;
@@ -75,7 +76,7 @@
     transition: 0.4s all;
 }
 .workplace{
-    color: black;
+    color: rgb(73, 71, 71);
     margin-left: 50px;
     width: 80%;
     transition: 0.4s all;
@@ -89,6 +90,7 @@
 }
 .body-admin{
     display: flex;
+    background-color: #f3f5f4;
 }
 .form-head{
     margin-bottom: 10px;

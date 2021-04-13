@@ -1,13 +1,39 @@
 import { Grid } from '@material-ui/core'
-import React from 'react'
+import React,{useState} from 'react'
 import './Topbar.css'
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    useHistory,
+    Redirect
   } from "react-router-dom";
 function Topbar(){
+    let history = useHistory();
+   // const [logout,setLogout] = useState(false);
+    const myStore = window.localStorage;
+    const user = JSON.parse(myStore.getItem('user'))
+    const isLogin = ()=>{
+        if(user!=null){
+            return (
+                <p className="login item mr-3"><i className="fa fa-user-circle fa-lg" aria-hidden="true"></i> {user.khachhang?.ho +' ' +  user.khachhang?.ten}</p>
+            )
+        }
+        else
+            return (
+                <p onClick={()=>{history.push('/login')}} className="login item mr-3"><i className="fa fa-user-circle fa-lg" aria-hidden="true"></i> Đăng nhập</p>
+            )
+    }
+    const isLogout = ()=>{
+        if(user != null){            
+            return (
+                <p onClick={()=>{myStore.removeItem('user'); myStore.removeItem('jwt'); history.push("/") ;window.location.reload(false) }} className="login item ml-3"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i> Đăng xuất</p>
+            )
+        }
+        else
+            return '';
+    }
     return (
         <div>
             <div className='d-none d-sm-block'>
@@ -17,13 +43,12 @@ function Topbar(){
                         <p>0336781801</p>
                     </div>
                     <div className='topbar__more d-flex'>
-                        <Link to='/login'>
-                            <p className="login item mr-3"><i className="fa fa-user-circle fa-lg" aria-hidden="true"></i> Login</p>
-                        </Link>
+                        {isLogin()}
                         <Link to='/cart'>
-                         <p className="cart item mr-3"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"></i><span className='index'>1</span> Cart</p>
+                         <p className="cart item mr-3"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"></i><span className='index'>1</span> Giỏ hàng</p>
                         </Link>
-                        <p className="login item"><i className="fa fa-bell fa-lg"></i><span className='index'>1</span> Notification</p>
+                        <p className="login item"><i className="fa fa-bell fa-lg"></i><span className='index'>1</span> Thông báo</p>
+                        {isLogout()}
                     </div>
                 </div>
             </div>

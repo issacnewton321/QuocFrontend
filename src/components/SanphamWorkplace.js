@@ -9,27 +9,36 @@ function Admin_workplace({slide}){
     const [on,setOn] = useState(false)
     const [onUpdate,setOnUpdate] = useState(false)
     const { register, handleSubmit, setValue } = useForm();
+    const [danhmuc,setDanhMuc] = useState(null);
+    const checkSanPham = (masp)=>{
+        for(let i=0;i<products.length;i++){
+            if(products[i].masp === masp)
+            return true;
+        }
+        return false;
+    }
     const onSubmit = data => {
         const myData = {
             ...data,
             photo:fileUrl
         }
-        console.log(process.env)
-        console.log(myData)
+        //console.log(process.env)
+        //console.log(myData)
+        const myAlterData = {
+            masp:myData.masp,
+            tensp:myData.tensp,
+            soluong:myData.soluong,
+            dongia:myData.dongia,
+            mota_ngan:myData.motangan,
+            mota_chitiet:myData.motachitiet,
+            photo:myData.photo,
+            khuyenmai:myData.khuyenmai,
+            danhmuc:myData.madm?{
+                madm:myData.madm
+            }:null
+        }
         if(onUpdate){
-            axios.put(process.env.REACT_APP_API +'sanpham',{
-                masp:myData.masp,
-                tensp:myData.tensp,
-                soluong:myData.soluong,
-                dongia:myData.dongia,
-                mota_ngan:myData.motangan,
-                mota_chitiet:myData.motachitiet,
-                photo:myData.photo,
-                khuyenmai:myData.khuyenmai,
-                danhmuc:myData.madm?{
-                    madm:myData.madm
-                }:null
-            })
+            axios.put(process.env.REACT_APP_API +'sanpham?',myAlterData)
             .then(response =>{
                 console.log(response)
                 setOn(!on)
@@ -40,19 +49,11 @@ function Admin_workplace({slide}){
             }).catch(error => console.log(error))
         }
         else{
-            axios.post(process.env.REACT_APP_API +'sanpham',{
-                masp:myData.masp,
-                tensp:myData.tensp,
-                soluong:myData.soluong,
-                dongia:myData.dongia,
-                mota_ngan:myData.motangan,
-                mota_chitiet:myData.motachitiet,
-                photo:myData.photo,
-                khuyenmai:myData.khuyenmai,
-                danhmuc:myData.madm?{
-                    madm:myData.madm
-                }:null
-            })
+            if(checkSanPham(data.masp)){
+                alert('Trùng mã sản phẩm !!!')
+                return;
+            }
+            axios.post(process.env.REACT_APP_API +'sanpham',myAlterData)
             .then(response =>{
                 console.log(response)
                 setOn(!on)
@@ -61,10 +62,6 @@ function Admin_workplace({slide}){
                 .catch(erro => console.log(erro))
             }).catch(error => console.log(error))
         }
-        // axios.get(process.env.REACT_APP_API+'sanpham')
-        // .then(response => console.log(response))
-        // .then(erro => console.log(erro))
-        
     }
     
     const [fileUrl,setFileUrl] = useState('');
@@ -85,9 +82,14 @@ function Admin_workplace({slide}){
         axios.get(process.env.REACT_APP_API+'sanpham/')
         .then(response => setProducts(response.data) )
         .catch(erro => console.log(erro))
+
+        //
+        axios.get(process.env.REACT_APP_API+'danhmuc/')
+        .then(response => setDanhMuc(response.data))
+        .catch(error => console.log(error))
     },[])
     const getDeleteSP = (masp)=>{
-        let agree = window.confirm(`Are you sure you want to delete masp = ${masp}?`);
+        let agree = window.confirm(`Bạn có muốn xóa masp = ${masp}?`);
         if (!agree)
         return
         axios.delete(process.env.REACT_APP_API+'sanpham/'+masp)
@@ -95,7 +97,7 @@ function Admin_workplace({slide}){
             alert('Delete successfully !!!')
             axios.get(process.env.REACT_APP_API+'sanpham')
             .then(response => setProducts(response.data) )
-            .catch(erro =>alert('Delete have been terminated !!!'))
+            .catch(erro =>alert('Xóa thất bại !!!'))
         } )
         .catch(erro => console.log(erro))
     }
@@ -137,7 +139,7 @@ function Admin_workplace({slide}){
                 </ul>
                 <div className={!on?"workplace_display":"d-none"}>
                     <table className="table table-striped table-bordered table-hover">
-                        <thead>
+                        <thead className="thead-success">
                             <tr>
                                 <th>MÃ SẢN PHẨM</th>
                                 <th>TÊN SẢN PHẨM</th>
@@ -155,7 +157,7 @@ function Admin_workplace({slide}){
                             const target = '#id' +product.masp;
                             console.log(target)
                             return (
-                                <tr>
+                                <tr key={product.masp}>
                                     <td>{product.masp}</td>
                                     <td>{product.tensp}</td>
                                     <td>{product.soluong}</td>
@@ -247,7 +249,7 @@ function Admin_workplace({slide}){
                 <div>
                 <div className={on?"workplace_input":"d-none"}>
                 <div className="card">
-                <div className="card-header text-white bg-primary d-flex justify-content-between px-4">FORM INPUT SẢN PHẨM<span className="exit-input" onClick={()=>setOn(!on)}>X</span></div>
+                <div className="card-header text-white bg-primary d-flex justify-content-between px-4">FORM NHẬP SẢN PHẨM<span className="exit-input" onClick={()=>setOn(!on)}>X</span></div>
                 <div className="card-body">
                 <form onSubmit={handleSubmit(onSubmit)}>
                         <div class="modal-body">
@@ -274,13 +276,17 @@ function Admin_workplace({slide}){
                                 </div>
                                 <div className="col-6">
                                     <label>Khuyến mãi</label>
-                                    <input class="form-control" placeholder="Please enter here ..." ref={register} name='khuyenmai' />
+                                    <input className="form-control" placeholder="Please enter here ..." ref={register} name='khuyenmai' />
                                     <label>Danh mục</label>
-                                    <input class="form-control" placeholder="Please enter here ..." ref={register} name='madm'/>
+                                    <select className="form-control" ref={register} name='madm'>
+                                        {danhmuc?.map(dm=>(
+                                            <option label={dm.tendm} value={dm.madm}></option>
+                                        ))}
+                                    </select>
                                     <label>Mô tả</label>
-                                    <input class="form-control" placeholder="Please enter here ..." ref={register} name='motangan'/>
+                                    <input className="form-control" placeholder="Please enter here ..." ref={register} name='motangan'/>
                                     <label>Mô tả chi tiết</label>
-                                    <textarea class="form-control" placeholder="Please enter here ..." ref={register} name='motachitiet' rows="5"/>
+                                    <textarea className="form-control" placeholder="Please enter here ..." ref={register} name='motachitiet' rows="5"/>
                                 </div>
                             </div>
                             

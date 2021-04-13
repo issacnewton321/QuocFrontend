@@ -41,7 +41,7 @@ function App() {
           <Bottom />
           
         </Route>
-        <Route path="/product/detail" exact>
+        <Route path="/product/:masp" exact>
          <Header />
           <Detail />
           <About />
@@ -63,7 +63,7 @@ function App() {
           <Bottom />
           
         </Route>
-        <Route path="/admin" exact>
+        <Route path="/admin/:adminPage" exact>
             <Admin />
         </Route>
         </_ScrollToTop>
