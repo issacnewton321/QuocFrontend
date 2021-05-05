@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import logo from './logo.png'
 import './Navbar.css'
+import axiosClient from '../API/AxiosClient'
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,6 +16,21 @@ function Navbar(){
       .then(response => setDanhMuc(response.data))
       .catch(error => console.log(error))
     },[])
+    const [search,setSearch] = useState('')
+    const [isSearch,setIsSearch] = useState(false)
+    const [products,setProducts] = useState([])
+    useEffect(async()=>{
+        try {
+          const data = await axiosClient.get('sanpham',null);
+          setProducts(data);
+        } catch (error) {
+          console.log(error)
+        }
+    },[]) 
+    const handleSearch = (e)=>{
+      const {value} = e.target
+      setSearch(value)
+    }
     return(
       
        <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -27,11 +43,33 @@ function Navbar(){
               FLOWERS AND SEEDS
           </a>
          </Link>
-        <form className='search input-group'>
-            <input className='form-control' placeholder='Nhập để tìm kiếm . . .'/>
+        <form className='search input-group ' onFocus={()=>setIsSearch(true)} onBlur={()=>setIsSearch(false)}>
+            <input className='form-control' placeholder='Nhập để tìm kiếm . . .' onChange={handleSearch} />
             <div className="input-group-append">
                 <button className='btn btn-success'><i className="fa fa-search" aria-hidden="true"></i></button>
             </div>
+            {isSearch?
+              <div className="searchBox">
+              <div className="table-responsive">
+              <table className="table table-borderless table-hover table-dark" >
+                <tbody>
+                  {products.map(sp=>{
+                    if(sp.tensp.toLowerCase().includes(search.toLowerCase()))
+                    return (
+                      <tr key={sp.masp} onMouseDown={()=> window.location.href="/product/"+sp.masp}  >
+                          <td>{sp.masp}</td>
+                          <td>{sp.tensp}</td>
+                          <td><img alt="pr" src={sp.photo} style={{width:70}}/></td>
+                          <td>{sp.dongia}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+              </div>
+              
+            </div>:''
+            }
         </form>
          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
            <span className="navbar-toggler-icon" />

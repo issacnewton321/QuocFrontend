@@ -11,7 +11,6 @@
     display: inline-block;
 }
 .topbar__contact p:hover ,.topbar__more p:hover{
-    color: #a9ffd0;
     cursor: pointer;
 }
 .index{
@@ -22,4 +21,25 @@
     position: relative;
     top:-10px;
     margin-left: 3px;
+}
+.myAccount{
+    position: absolute;
+    background-color: white;
+    border: 1px solid rgb(189, 186, 186);
+    border-radius: 3px;
+    color: black;
+    width: 100px;
+    top: 46px;
+    padding: 10px 0px;
+    width: fit-content
+}
+.myAccount p{
+    padding: 0 20px;
+}
+.myAccount p:hover{
+    background-color: #e5e2e2;
+
+}
+.table-font{
+    font-size: 18px !important;
 }

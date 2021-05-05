@@ -2,7 +2,7 @@
 import React,{useState} from 'react'
 import Detail_Portfolio from './Detail_Portfolio'
 import axios from 'axios'
-import {useHistory} from 'react-router-dom'
+import {useHistory,Link} from 'react-router-dom'
 import './Login.css'
 function Login(){
     let history =useHistory();
@@ -21,40 +21,26 @@ function Login(){
         axios.post(process.env.REACT_APP_API +'authenticate',login)
         .then(response => {
             myStorage.setItem('jwt',response.data.jwt)
-            axios.get(process.env.REACT_APP_API +'nguoidung/'+login.username,{headers:{authorization: 'Bearer ' + response.data.jwt}})
-            .then(response =>{
-                userInfo=()=>{
-                    if(response.data.quyen ==1){
-                        return {
-                            username:'Admin',
-                            quyen:1
-                        }
-                    }
-                    else if(response.data.quyen ==2)
-                    return {
-                        username:response.data.username,
-                        quyen:2,
-                        khachhang:response.data.khachhang
-                    }
-                    else if(response.data.quyen ==3)
-                    return {
-                        username:response.data.username,
-                        quyen:3,
-                        nhanvien:response.data.nhanvien
-                    }
-                }
-                //console.log(userInfo())
-                myStorage.setItem('user',JSON.stringify(userInfo()))
-                if(response.data.quyen == 1)
-                    history.push("/admin/index")
-                else if(response.data.quyen == 2)
-                    history.push("/")
+            myStorage.setItem('username',login.username)
+            axios.get(process.env.REACT_APP_API +'quyen/'+login.username,{headers:{authorization: 'Bearer ' + response.data.jwt}})
+            .then(res => {
+                let quyen = res.data;
+                console.log(quyen)
+                myStorage.setItem('quyen',quyen)
+                if(quyen == 1)
+                    history.push('/admin/index')
+                else if(quyen == 2)
+                    history.push('/')
+                else if(quyen == 3)
+                history.push('/nhanvien/index')
             })
+            .catch(err =>{})
+            
         })
         .catch(erro => alert('login thất bại !!!'))
     }
     return(
-        <div className='container'>
+        <div className='container-fluid'>
                 <div className='row'>
                     {/* <div className='col-4'>               
                         <Detail_Portfolio />
@@ -74,7 +60,7 @@ function Login(){
                                     <input type="password" name ="password" placeholder="Password" value={login.password} onChange={alterInput} required/>
                                 </div>
                                 <div className="info">
-                                    <a href="#">Tạo tài khoản</a><br/>
+                                    <Link to="/register"><a>Tạo tài khoản</a><br    /></Link>
                                     <a href="#">Quên mật khẩu ?</a>
                                 </div>
                                 <div className="submit" type="submit">

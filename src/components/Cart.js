@@ -2,51 +2,182 @@ import React,{useState,useEffect} from 'react'
 import Detail_Portfolio from './Detail_Portfolio'
 import hoa from '../image/hoa4.jpg'
 import axios from 'axios'
+import {useHistory} from 'react-router-dom'
 import './Cart.css'
+import emailjs from 'emailjs-com';
 export default function Cart(){
     let myStorage = window.localStorage;
+    const [user,setUser] = useState({});
+    const [total,setTotal] =useState(0)
+    const history = useHistory();
     const header = {
         headers: {
             Authorization: 'Bearer ' + window.localStorage.getItem('jwt') //the token is a variable which holds the token
           }
       }
       const [cart,setCart] = useState([])
-      let username = JSON.parse(myStorage.getItem('user'))?.username;
+      const [sanpham,setSanpham] = useState([])
+      let username = myStorage.getItem('username')
       useEffect(()=>{
-        axios.get(process.env.REACT_APP_API+`giohang/${username}`,header)
-        .then(response => setCart(response.data))
-        .catch(erro =>console.log(erro))
-      },[])
-      const totalMoney = ()=>{
-          let total = 0;
-          for(let i=0;i<cart.length;i++){
-            total += cart[i].sanpham.dongia * cart[i].soluong;
+          if(username == null)
+            history.push('/login')
+        
+          else {
+            axios.get(process.env.REACT_APP_API +'khachhang/'+username,header)
+            .then(response => {
+                setUser(response.data)
+                axios.get(process.env.REACT_APP_API+`giohang/${response.data.makh}`,header)
+                .then(response => setCart(response.data))
+                .catch(erro =>console.log(erro))
+                
+            })
+            .catch(error => console.log(error))
+
+
+            
+            
           }
-          return total;
-      }
+
+        
+      },[])
       const deleteCart= (masp)=>{
-        axios.delete(process.env.REACT_APP_API+`giohang/${username}/${masp}`,header)
+        
+        setSanpham(sanpham.filter(sp =>{
+            if(sp.masp !== masp)
+                return sp
+        }))
+
+        axios.delete(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}`,header)
         .then(response => 
-            axios.get(process.env.REACT_APP_API+`giohang/${username}`,header)
+            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`,header)
             .then(response => setCart(response.data))
             .catch(erro =>console.log(erro))    
         )
         .catch(erro =>console.log(erro))
       }
-      const changeNum =(e,masp)=>{
-        //   let num = e.target.value;
-        //   const cc = {
-        //       ...cart
-        //   };
-        //   for(let i=0;i<cc.length;i++){
-        //     if(cc[i].sanpham.masp === masp){
-        //         cc[i].soluong = num;
-        //         console.log(cc)
-        //         setCart(cc);
-        //         return;
-        //     }
-        //   }
+      const changeNum =(e,sp)=>{
+        let masp = sp.masp
+        let num = e.target.value;
+
+        const newSP = sanpham.map(s =>{
+            if(s.masp === masp){
+                return {
+                    ...s,
+                    soluong:num
+                }
+            }
+            else 
+                return s
+        })
+        setSanpham(newSP)
+
+        axios.get(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}?soluong=${num}`,header)
+        .then(res =>{
+            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`,header)
+                .then(response => setCart(response.data))
+                .catch(erro =>console.log(erro))
+        })
+        .catch(err => console.log(err))
+
       }
+      const checkSP = (e,sp,soluong)=>{
+        sp.soluong = soluong
+          if(e.target.checked){
+                setSanpham([...sanpham,sp])
+          }
+          else{
+                setSanpham(sanpham.filter(s => s !== sp))
+          }
+          //console.log(sanpham)
+      }
+      useEffect(()=>{
+          console.log(sanpham)
+          let tam =0;
+        sanpham.forEach(sp => {
+            tam += Number(sp?.dongia) * Number(sp?.soluong)
+            
+        })
+        setTotal(tam);
+      },[sanpham])
+
+      const tongsp = ()=>{
+          let tong = 0;
+         sanpham.forEach(sp=>{
+             tong += Number(sp?.soluong);
+         })
+         return tong
+      }
+     const sendEmail = (myMessage)=>{
+            var templateParams = {
+                to_name:user.ho + ' '  + user.ten,
+                from_name: 'Chủ tịch Hồng Quân',
+                message:myMessage,
+                url:'https://scontent.fsgn5-7.fna.fbcdn.net/v/t1.6435-9/79771446_2469549519965437_8172007245870006272_n.jpg?_nc_cat=103&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=pLCmJOHT02EAX9MvKRe&_nc_ht=scontent.fsgn5-7.fna&oh=fc6dd68ebb012af9470ac03ddc02817c&oe=60B45DDC',
+                notes: 'Check this out!',
+                email:'hongquan080799@gmail.com'
+            };
+             
+            emailjs.send('service_c4h4x3s', 'template_iy1y5te', templateParams,'user_eXT3mcACRHWvnrHkCZPaZ')
+                .then(function(response) {
+                   console.log('SUCCESS!', response.status, response.text);
+                }, function(error) {
+                   console.log('FAILED...', error);
+                });
+        }
+      const order = ()=>{
+        axios.post(process.env.REACT_APP_API+`donhang/${user.makh}`,sanpham,header)
+        .then(res => {
+            alert('Đặt hàng thành công'); 
+            const myMessage = myEmail
+            sendEmail(myMessage);
+            setSanpham([]);
+            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`,header)
+            .then(response => setCart(response.data))
+            .catch(erro =>console.log(erro))    })
+        .catch(err => alert('Đặt hàng thất bại'))
+      }
+      const isInList= (masp)=>{
+            return sanpham.some(sp => sp.masp === masp)
+      }
+      const myEmail = 
+      `<div>
+                  <h4 className="text-secondary">Thông tin khách hàng</h4>
+                    <hr/>
+                        <table className="table table-borderless table-cart">
+                            <tr>
+                                <td>HỌ TÊN</td>
+                                <td>${user.ho + ' ' + user.ten}</td>
+                            </tr>
+                            <tr>
+                                <td>SỐ ĐIỆN THOẠI</td>
+                                <td>${user.sdt}</td>
+                            </tr>
+                            <tr>
+                                <td>EMAIL</td>
+                                <td>${user.email}</td>
+                            </tr>
+                            <tr>
+                                <td>ĐỊA CHỈ</td>
+                                <td>${user.diachi}</td>
+                            </tr>
+                        </table>
+                    <hr/>
+                  <h4>Danh sách đơn hàng đang chờ xác nhận</h4>
+                  <table>
+                  ${cart.map(c=>{
+                        if(isInList(c.sanpham.masp))
+                        return`
+                            <tr key={c.sanpham.masp}>
+                                <td><img src=${c.sanpham.photo} alt="picture" style="width:100px;padding:5px 30px" /></td>
+                                <td style="padding:5px 30px">${c.sanpham.tensp}</td>
+                                <td style="padding:5px 30px">Số lượng : ${c.sanpham.soluong}</td>
+                                <td style="padding:5px 30px">${c.sanpham.dongia * c.soluong} đ</td>
+                            </tr>`
+                        }
+                    )}
+                  </table>
+                  <hr/>
+              </div>`
     return (
         <div>
             <div className='banner'>
@@ -62,23 +193,89 @@ export default function Cart(){
                         <h4 className="cart-header">DANH SÁCH GIỎ HÀNG</h4>            
                         <table className="table table-border table-cart">
                             {cart.map(c=>(
-                                <tr>
-                                    <td><button className="btn btn-outline-danger" onClick={()=> deleteCart(c.sanpham.masp)}>X</button> </td>
+                                <tr key={c.sanpham.masp}>
+                                    <td onClick={()=> deleteCart(c.sanpham.masp)} className="deleteCart">&#10005;</td>
                                     <td><img src={c.sanpham.photo} alt="picture" style={{width:"70px",marginRight:"30px"}} /> {c.sanpham.tensp}</td>
-                                    <td style={{width:"15%"}}><input type="number" className="form-control" min="0" defaultValue={c.soluong} onChange={(e)=>changeNum(e,c.sanpham.masp)} /></td>
+                                    <td style={{width:"15%"}}><input type="number" className="form-control" min="1" defaultValue={c.soluong} onClick={(e)=>changeNum(e,c.sanpham)} /></td>
                                     <td><p className="text-danger">{c.sanpham.dongia * c.soluong} đ</p></td>
+                                    <td><input type="checkbox" className="form-check-input" onClick={(e)=>checkSP(e,c.sanpham,c.soluong)}/></td>
                                 </tr>
                             ))}
                         </table>
                         <div className="cart-hr"></div>
-                        <div className="cart-total text-success">
-                            <h4>Total :</h4>
-                            <h4>{totalMoney()}</h4>
+                        <div className="cart-total mt-4">
+                            <p>Tổng sản phẩm :</p>
+                            <p>{tongsp()}</p>
                         </div>
-                        <button className="btn btn-success btn-lg mt-4">ORDER NOW</button>
+                        <div className="cart-total text-success">
+                            <h4>Tạm tính :</h4>
+                            <h4>{total} đ</h4>
+                        </div>
+                        
+                        {sanpham.length>0?<button className="btn btn-success btn-lg mt-4" data-toggle="modal" data-target="#exampleModal">ORDER NOW</button>:''}
+                          <div className="modal fade" id="exampleModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div className="modal-dialog modal-lg" role="document">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">TIẾN HÀNH ĐẶT HÀNG</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">×</span>
+                                    </button>
+                                  </div>
+                                  <div className="modal-body">
+                                      <p className="text-secondary">Thông tin khách hàng</p>
+                                      <hr/>
+                                        <table className="table table-borderless table-cart">
+                                            <tr>
+                                                <td>HỌ TÊN</td>
+                                                <td>{user.ho + ' ' + user.ten}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SỐ ĐIỆN THOẠI</td>
+                                                <td>{user.sdt}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>EMAIL</td>
+                                                <td>{user.email}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ĐỊA CHỈ</td>
+                                                <td>{user.diachi}</td>
+                                            </tr>
+                                        </table>
+                                    <hr/>
+                                    <p className="text-secondary">Danh sách sản phẩm</p>
+                                    <hr/>
+                                    <table className="table table-borderless table-cart">
+                                        {cart.map(c=>{
+                                            if(isInList(c.sanpham.masp))
+                                            return(
+                                                <tr key={c.sanpham.masp}>
+                                                    <td><img src={c.sanpham.photo} alt="picture" style={{width:"70px",marginRight:"30px"}} /> {c.sanpham.tensp}</td>
+                                                    <td style={{width:"15%"}}>Số lượng : {c.sanpham.soluong}</td>
+                                                    <td className="text-danger">{c.sanpham.dongia * c.soluong} đ</td>
+                                                </tr>)
+                                            }
+                                        )}
+                                        <hr/>
+                                        <tr>
+                                            <td colSpan="2" style={{fontSize:"23px"}}>Tổng tiền</td>
+                                            <td style={{fontSize:"23px"}}>{total} đ</td>
+                                        </tr>
+                                    </table>
+
+                                  </div>
+                                  <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                                    <button type="button" className="btn btn-primary" onClick={order} data-dismiss="modal">Xác nhận</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                     </div>
                 </div>
             </div>
         </div>
     )
 }
+

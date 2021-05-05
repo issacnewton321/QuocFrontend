@@ -28,3 +28,11 @@
     height: 1.5px;
     background-color: #249f66;;
 }
+.deleteCart{
+    transition: all 0.4s;
+}
+
+.deleteCart:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}

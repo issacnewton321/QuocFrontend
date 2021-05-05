@@ -14,9 +14,8 @@
     border-bottom: none;
 }
 .myItem{
-    padding: 20px 0px;
+    padding: 30px 0px;
     transition: all 0.5s;
-
 }
 .page-link{
     color: #448000 !important;
@@ -24,14 +23,30 @@
 .card {
     margin: 0 auto; /* Added */
     float: none; /* Added */
+    
 }
-.card-body{
+.my-card-body{
     height: 200px;
-    transition: all 0.3s;
+    transition: all .3s;
 }
-.card-body:hover{
+.myItem:hover{
+    transform: scale(1.05);
+}
+.myItem:hover .image{
     cursor: pointer;
     color: #448000;
-    font-size: 18px;
-    background-color: #d7d8d6;
+    transform: scale(1.1);
+}
+.myItem:hover .my-card-body{
+    cursor: pointer;
+    color: #448000;
+}
+.image img{
+    width: 100%;
+}
+.card{
+    overflow: hidden;
+}
+.image{
+    transition: all 0.4s;
 }

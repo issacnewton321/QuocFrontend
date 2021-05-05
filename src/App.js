@@ -1,5 +1,5 @@
 import './App.css';
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import Header from './components/Header'
 import Carousel from './components/Carousel'
 import ItemList from './components/ItemList'
@@ -10,6 +10,10 @@ import Detail from './components/Detail'
 import Cart from './components/Cart'
 import Admin from './components/Admin'
 import Login from './components/Login'
+import Register from './components/Register'
+import Activate from './components/Activate'
+import Nhanvien from './components/Nhanvien'
+import {UserProvider} from './context/UserContext'
 import {
   BrowserRouter as Router,
   Switch,
@@ -26,13 +30,23 @@ function _ScrollToTop(props) {
 }
 function App() {
   return (
-    <div className="App">     
+    
+      <div className="App">     
       <Router>
-      
+      <UserProvider>
       <Switch>
         
         <_ScrollToTop>
           <Route path="/" exact>
+          <Header />
+          <Carousel />
+          <ItemList />
+          <About />
+          <Commit />
+          <Bottom />
+          
+        </Route>
+        <Route path="/danhmuc/:madm" exact>
           <Header />
           <Carousel />
           <ItemList />
@@ -63,13 +77,32 @@ function App() {
           <Bottom />
           
         </Route>
+        <Route path="/activate" exact>
+          <Header />
+          <Activate />
+          <About />
+          <Commit />
+          <Bottom />
+          
+        </Route>
+        <Route path="/register" exact>
+          <Header />
+          <Register />
+          <About />
+          <Commit />
+          <Bottom />
+          
+        </Route>
         <Route path="/admin/:adminPage" exact>
             <Admin />
+        </Route>
+        <Route path="/nhanvien/:nhanvienPage" exact>
+            <Nhanvien />
         </Route>
         </_ScrollToTop>
         
     </Switch>
-   
+    </UserProvider>
       </Router>
       
     </div>

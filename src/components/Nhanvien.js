@@ -1,10 +1,6 @@
 import React,{useState,useEffect} from 'react'
-import './Admin.css'
 import SanphamWorkplace from './SanphamWorkplace'
 import DanhMucWorkplace from './DanhMucWorkplace'
-import KhachhangWorkplace from './KhachhangWorkplace'
-import NhanvienWorkplace from './NhanvienWorkplace'
-import DonhangWorkplace from './Donhang_workplace'
 import {
     BrowserRouter as Router,
     Switch,
@@ -15,20 +11,21 @@ import {
     useHistory
   } from "react-router-dom";
 
-function Admin(){
+
+function Nhanvien(){
     let myStore = window.localStorage
     let quyen = myStore.getItem('quyen')
     let history = useHistory();
     useEffect(()=>{
-        if(quyen != 1)
+        if(quyen != 3)
             history.push('/')
     })
     
     
-    let {adminPage} = useParams();
+    let {nhanvienPage} = useParams();
     const [slide,setSlide] = useState(true)
     let Page = '';
-    switch(adminPage){
+    switch(nhanvienPage){
         case 'sanpham':{
             Page = <SanphamWorkplace slide={slide}/>
             break;
@@ -41,18 +38,10 @@ function Admin(){
             Page = <DanhMucWorkplace slide={slide}/>
             break;
         }
-        case 'khachhang':{
-            Page = <KhachhangWorkplace slide={slide}/>
-            break;
-        }
-        case 'nhanvien':{
-            Page = <NhanvienWorkplace slide={slide}/>
-            break;
-        }
-        case 'donhang':{
-            Page = <DonhangWorkplace slide={slide}/>
-            break;
-        }
+        // case 'donhang':{
+        //     Page = <D slide={slide}/>
+        //     break;
+        // }
     }
     return(
         <div>
@@ -73,7 +62,6 @@ function Admin(){
                         <Link to="/admin/danhmuc"><p><i className="fa fa-users" aria-hidden="true"></i><span className="ml-2">Danh sách danh mục</span></p></Link>
                         <Link to="/admin/khachhang"><p><i className="fa fa-calendar-check-o" aria-hidden="true"></i><span className="ml-2">Danh sách khách hàng</span></p></Link>
                         <Link to="/admin/nhanvien"><p><i className="fa fa-calendar" aria-hidden="true"></i><span className="ml-2">Danh sách nhân viên</span></p></Link>
-                        <Link to="/admin/donhang"><p><i className="fa fa-calendar" aria-hidden="true"></i><span className="ml-2">Danh sách đơn hàng</span></p></Link>
                         <Link to="/admin/sanpham"><p><i className="fa fa-sign-out" aria-hidden="true"></i><span className="ml-2">Thoát</span></p></Link>
                     </div>
                     
@@ -88,4 +76,4 @@ function Admin(){
     
 }
 
-export default Admin
+export default Nhanvien

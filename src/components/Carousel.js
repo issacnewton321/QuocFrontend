@@ -6,16 +6,16 @@ import hoa3 from '../image/hoa3.jpg'
 import './Carousel.css'
 function Carousel(){
     return (
-        <div className='container mt-4'>
+        <div className='container-fluid mt-4 my-carousel'>
             <Slider>
                 <div className='slide-item'>
-                    <img src={hoa1}/>
+                    <img src={hoa1} style={{width:'100%'}}/>
+                </div>
+                <div  className='slide-item' >
+                    <img src={hoa2} style={{width:'100%'}} />
                 </div>
                 <div  className='slide-item'>
-                    <img src={hoa2}/>
-                </div>
-                <div  className='slide-item'>
-                    <img src={hoa3}/>
+                    <img src={hoa3} style={{width:'100%'}}/>
                 </div>
             </Slider>
         </div>

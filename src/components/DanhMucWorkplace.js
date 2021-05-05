@@ -7,6 +7,7 @@ function Admin_workplace({slide}){
     const [onUpdate,setOnUpdate] = useState(false)
     const { register, handleSubmit, setValue } = useForm();
     const [danhmuc,setDanhmuc] = useState([]);
+    const [search,setSearch] = useState('')
     const checkDanhMuc = (madm)=>{
         for(let i=0;i<danhmuc.length;i++){
             if(danhmuc[i].madm === madm)
@@ -70,13 +71,17 @@ function Admin_workplace({slide}){
         setValue("madm",'')
         setValue("tendm",'')
     }
+    const handleSearch = (e)=>{
+        const {value} = e.target;
+        setSearch(value)
+    }
     return(
         <div className={slide?"workplace":"on-off-workplace"}>
                 <h3 className={!on?"form-head":"d-none"}>DANH SÁCH DANH MỤC</h3>  
                 <ul className={!on?"form-func":"d-none"}>
                         <li className="setting_form"><i className="fa fa-cogs" aria-hidden="true"></i></li>
                         <li className="add_form" onClick={()=>getInsertDM()}><i className="fa fa-plus-square-o" aria-hidden="true"></i>ADD</li>
-                        <li className="find_form_li"><i className="fa fa-search" aria-hidden="true"></i> <input type="text" className = "find_form"/> </li>
+                        <li className="find_form_li"><i className="fa fa-search" aria-hidden="true"></i> <input type="text" className = "find_form" onChange={handleSearch}/> </li>
                 </ul>
                 <div className={!on?"workplace_display":"d-none"}>
                     <table className="table table-striped table-bordered table-hover">
@@ -90,6 +95,7 @@ function Admin_workplace({slide}){
                         </thead>
                         <tbody>
                             {danhmuc.map(dm =>{
+                                if(dm.tendm.toLowerCase().includes(search.toLowerCase()))
                                 return (
                                     <tr key={dm.madm}>
                                         <td>{dm.madm}</td>

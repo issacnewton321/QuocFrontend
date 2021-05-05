@@ -17,10 +17,16 @@ function Detail_Product(){
     let {masp} = useParams();
     const [sl,setSl] = useState(1);
     const [sanpham,setSanpham] =useState();
+    const [user,setUser] = useState({})
+    const username = window.localStorage.getItem('username')
     useEffect(()=>{
         axios.get(process.env.REACT_APP_API+'sanpham/'+masp)
         .then(response => setSanpham(response.data) )
         .catch(erro => console.log(erro))
+
+        axios.get(process.env.REACT_APP_API +'khachhang/'+username,header)
+        .then(response => setUser(response.data))
+        .catch(error => console.log(error))
     },[])
     let myStorage = window.localStorage;
     const header = {
@@ -28,15 +34,13 @@ function Detail_Product(){
             Authorization: 'Bearer ' + window.localStorage.getItem('jwt') //the token is a variable which holds the token
         }
     }
-    let username = JSON.parse(myStorage.getItem('user'))?.username;
-
     const addCart = (masp)=>{
         console.log(masp + sl)
         if(username == null){
         history.push('/login');
         }
         else{
-        axios.post(process.env.REACT_APP_API+`giohang/${username}/${masp}?soluong=${sl}`,{},header)
+        axios.post(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}?soluong=${sl}`,{},header)
         .then(Response => alert('Thêm thành công !!!'))
         .catch(error => {alert('Thêm thất bại ' + error);console.log(error)})
         }
@@ -105,15 +109,16 @@ function Detail_Product(){
                     <div className="tab-pane container fade" id="menu2">
                         <div className="row">
                             <div className="col-12 mb-4">
-                                <p>0 Bình luận</p>
-                                <hr></hr>
+                                {/* <p>0 Bình luận</p>
+                                <hr></hr> */}
+                                <div class="fb-comments" data-href={"https://localhost:8080/"+masp} data-width="" data-numposts="5"></div>
                             </div>
-                            <div className="col-2 mt-4">
+                            {/* <div className="col-2 mt-4">
                                 <img src={quan} alt="picture" style={{width:"90%"}} className="rounded-circle"/>
                             </div>
                             <div className="col-10 mt-4">
                                 <textarea className="form-control" rows="4" placeholder="Để lại bình luận của bạn !!!"></textarea>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

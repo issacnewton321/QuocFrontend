@@ -6,6 +6,7 @@ import axios from 'axios'
 import './SanphamWorkplace.css'
 function Admin_workplace({slide}){
     const [products,setProducts] = useState([])
+    const [search,setSearch] = useState('')
     const [on,setOn] = useState(false)
     const [onUpdate,setOnUpdate] = useState(false)
     const { register, handleSubmit, setValue } = useForm();
@@ -38,7 +39,9 @@ function Admin_workplace({slide}){
             }:null
         }
         if(onUpdate){
-            axios.put(process.env.REACT_APP_API +'sanpham?',myAlterData)
+            console.log("update")
+            console.log(fileUrl)
+            axios.put(process.env.REACT_APP_API +'sanpham',myAlterData)
             .then(response =>{
                 console.log(response)
                 setOn(!on)
@@ -71,8 +74,8 @@ function Admin_workplace({slide}){
             // code here
             var file = e.target.files[0];
            // console.log('dsds')
-            const fileNameFirst = file.name;
-            const fileNameFinal = fileNameFirst.replace(/ /g,'')
+            const fileNameFirst = file?.name;
+            const fileNameFinal = fileNameFirst?.replace(/ /g,'')
             var storageRef =  store.ref().child("images/"+fileNameFinal)
             
             await storageRef.put(file);
@@ -99,7 +102,7 @@ function Admin_workplace({slide}){
             .then(response => setProducts(response.data) )
             .catch(erro =>alert('Xóa thất bại !!!'))
         } )
-        .catch(erro => console.log(erro))
+        .catch(erro => alert('Xóa thất bại'))
     }
     const getUpdateSP =(sp)=>{
         setOnUpdate(true)
@@ -128,6 +131,11 @@ function Admin_workplace({slide}){
         setValue("motangan",'')
         setValue("motachitiet",'')
         setFileUrl('')
+        setValue("photo",null)
+    }
+    const handleSearch = (e)=>{
+        const {value} = e.target;
+        setSearch(value);
     }
     return(
         <div className={slide?"workplace":"on-off-workplace"}>
@@ -135,7 +143,7 @@ function Admin_workplace({slide}){
                 <ul className={!on?"form-func":"d-none"}>
                         <li className="setting_form"><i className="fa fa-cogs" aria-hidden="true"></i></li>
                         <li className="add_form" onClick={()=>getInsertSP()}><i className="fa fa-plus-square-o" aria-hidden="true"></i>ADD</li>
-                        <li className="find_form_li"><i className="fa fa-search" aria-hidden="true"></i> <input type="text" className = "find_form"/> </li>
+                        <li className="find_form_li"><i className="fa fa-search" aria-hidden="true"></i> <input type="text" className = "find_form" onChange={handleSearch}/> </li>
                 </ul>
                 <div className={!on?"workplace_display":"d-none"}>
                     <table className="table table-striped table-bordered table-hover">
@@ -155,8 +163,9 @@ function Admin_workplace({slide}){
                         <tbody>
                         {products.map(product=>{
                             const target = '#id' +product.masp;
-                            console.log(target)
-                            return (
+                            //console.log(target)
+                            if(product.tensp.toLowerCase().includes(search.toLowerCase()))
+                                return (
                                 <tr key={product.masp}>
                                     <td>{product.masp}</td>
                                     <td>{product.tensp}</td>

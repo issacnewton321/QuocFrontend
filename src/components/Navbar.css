@@ -9,6 +9,20 @@
     width: 40px;
     margin: 0 15px;
 }
+.search{
+    position: relative;
+}
+.searchBox{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    background-color: #c7c7c7;
+    top: 50px;
+    border-radius: 10px;
+    height: 400px;    
+    overflow: scroll;
+}
+
 @media (max-width: 574px){
  
     .search{

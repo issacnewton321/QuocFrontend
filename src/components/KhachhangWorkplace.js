@@ -9,22 +9,23 @@ function Admin_workplace({slide}){
           }
     }
     const [khachhang,setkhachhang] = useState([]);
+    const [search,setSearch] = useState('')
     useEffect(()=>{
-        axios.get(process.env.REACT_APP_API+'nguoidung/',header)
-        .then(response => setkhachhang(response.data.filter(nv => nv.khachhang != null)))
+        axios.get(process.env.REACT_APP_API+'khachhang/',header)
+        .then(response => setkhachhang(response.data))
         .catch(erro => console.log(erro))
     },[])
-    const getDeleteKH = (makh)=>{
-        let agree = window.confirm(`Bạn có muốn xóa khách hàng makh = ${makh}?`);
+    const getDeleteKH = (matk)=>{
+        let agree = window.confirm(`Bạn có muốn xóa khách hàng makh = ${matk}?`);
         if (!agree)
         return
-        axios.delete(process.env.REACT_APP_API+'khachhang/'+makh,header)
+        axios.delete(process.env.REACT_APP_API+'khachhang/'+matk,header)
         .then(response => {
             
-            axios.get(process.env.REACT_APP_API+'nguoidung/',header)
+            axios.get(process.env.REACT_APP_API+'khachhang/',header)
             .then(response => 
                 {
-                    setkhachhang(response.data.filter(nv => nv.khachhang != null))
+                    setkhachhang(response.data)
                     alert('Xóa thành công !!!')
                 } )
             .catch(erro =>alert('Xóa thất bại !!!'))
@@ -32,12 +33,16 @@ function Admin_workplace({slide}){
         } )
         .catch(erro => console.log(erro))
     }
+    const handleChange = (e)=>{
+        const {value} = e.target;
+        setSearch(value);
+    }
     return(
         <div className={slide?"workplace":"on-off-workplace"}>
                 <h3 className={!on?"form-head":"d-none"}>DANH SÁCH KHÁCH HÀNG </h3>  
                 <ul className={!on?"form-func":"d-none"}>
                         <li className="setting_form"><i className="fa fa-cogs" aria-hidden="true"></i></li>
-                        <li className="find_form_li"><i className="fa fa-search" aria-hidden="true"></i> <input type="text" className = "find_form"/> </li>
+                        <li className="find_form_li"><i className="fa fa-search" aria-hidden="true"></i> <input type="text" onChange={handleChange} className = "find_form"/> </li>
                 </ul>
                 <div className={!on?"workplace_display":"d-none"}>
                     <table className="table table-striped table-bordered table-hover">
@@ -49,7 +54,6 @@ function Admin_workplace({slide}){
                                 <th>SỐ ĐIỆN THOẠI</th>
                                 <th>EMAIL</th>
                                 <th>GIỚI TÍNH</th>
-                                <th>NGÀY TẠO</th>
                                 <th>USERNAME</th>
                                 <th>PASSWORD</th>
                                 <th>DELETE</th>
@@ -58,26 +62,26 @@ function Admin_workplace({slide}){
                         <tbody>
                             {khachhang.map(kh =>{
                                 const gender = ()=>{
-                                    if(kh.khachhang.gioitinh == '0'){
+                                    if(kh.gioitinh == '0'){
                                         return 'Nữ'
                                     }
-                                    else if(kh.khachhang.gioitinh == '1')
+                                    else if(kh.gioitinh == '1')
                                         return 'Nam'
                                     else
                                         return 'Khác'
                                 }
+                                if((kh.ho +' '+ kh.ten).toLowerCase().includes(search.toLowerCase()))
                                 return (
-                                    <tr key={kh.khachhang.makh}>
-                                       <td>{kh.khachhang.makh}</td>
-                                       <td>{kh.khachhang.ho +' '+ kh.khachhang.ten}</td>
-                                       <td>{kh.khachhang.diachi}</td>
-                                       <td>{kh.khachhang.sdt}</td>
-                                       <td>{kh.khachhang.email}</td>
+                                    <tr key={kh.makh}>
+                                       <td>{kh.makh}</td>
+                                       <td>{kh.ho +' '+ kh.ten}</td>
+                                       <td>{kh.diachi}</td>
+                                       <td>{kh.sdt}</td>
+                                       <td>{kh.email}</td>
                                        <td>{gender()}</td>
-                                       <td>{kh.khachhang.ngaytaotk}</td>
-                                       <td>{kh.username}</td>
-                                       <td>{kh.password}</td>
-                                       <td className="custom"><p className="custom-link" onClick={()=> getDeleteKH(kh.khachhang.makh)}>Delete</p> </td>
+                                       <td>{kh.taikhoan?.username}</td>
+                                       <td>****</td>
+                                       <td className="custom"><p className="custom-link" onClick={()=> getDeleteKH(kh.taikhoan.matk)}>Delete</p> </td>
                                     </tr>
                                 )
                             })}
