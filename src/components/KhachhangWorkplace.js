@@ -3,15 +3,10 @@ import axios from 'axios'
 import './SanphamWorkplace.css'
 function Admin_workplace({slide}){
     const [on,setOn] = useState(false)
-    const header = {
-        headers: {
-            Authorization: 'Bearer ' + window.localStorage.getItem('jwt') //the token is a variable which holds the token
-          }
-    }
     const [khachhang,setkhachhang] = useState([]);
     const [search,setSearch] = useState('')
     useEffect(()=>{
-        axios.get(process.env.REACT_APP_API+'khachhang/',header)
+        axios.get(process.env.REACT_APP_API+'khachhang/')
         .then(response => setkhachhang(response.data))
         .catch(erro => console.log(erro))
     },[])
@@ -19,10 +14,10 @@ function Admin_workplace({slide}){
         let agree = window.confirm(`Bạn có muốn xóa khách hàng makh = ${matk}?`);
         if (!agree)
         return
-        axios.delete(process.env.REACT_APP_API+'khachhang/'+matk,header)
+        axios.delete(process.env.REACT_APP_API+'khachhang/'+matk)
         .then(response => {
             
-            axios.get(process.env.REACT_APP_API+'khachhang/',header)
+            axios.get(process.env.REACT_APP_API+'khachhang/')
             .then(response => 
                 {
                     setkhachhang(response.data)

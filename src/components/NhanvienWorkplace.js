@@ -4,15 +4,10 @@ import './SanphamWorkplace.css'
 function Admin_workplace({slide}){
     const [on,setOn] = useState(false)
     const [input,setInput] = useState({})
-    const header = {
-        headers: {
-            Authorization: 'Bearer ' + window.localStorage.getItem('jwt') //the token is a variable which holds the token
-          }
-    }
     const [search,setSearch] = useState('')
     const [nhanvien,setnhanvien] = useState([]);
     useEffect(()=>{
-        axios.get(process.env.REACT_APP_API+'nhanvien/',header)
+        axios.get(process.env.REACT_APP_API+'nhanvien/')
         .then(response => setnhanvien(response.data))
         .catch(erro => console.log(erro))
     },[])
@@ -20,10 +15,10 @@ function Admin_workplace({slide}){
         let agree = window.confirm(`Bạn có muốn xóa manv = ${matk}?`);
         if (!agree)
         return
-        axios.delete(process.env.REACT_APP_API+'nhanvien/'+matk,header)
+        axios.delete(process.env.REACT_APP_API+'nhanvien/'+matk)
         .then(response => {
             
-            axios.get(process.env.REACT_APP_API+'nhanvien/',header)
+            axios.get(process.env.REACT_APP_API+'nhanvien/')
             .then(response => {
                 setnhanvien(response.data)
                 alert("Xóa thành công !!!")
@@ -52,10 +47,10 @@ function Admin_workplace({slide}){
         axios.get(process.env.REACT_APP_API+'IsUserExits/'+ input.username)
         .then(response => {alert('Đã tồn tại username này !!!'); return})
         .catch(ero=>{
-            axios.post(process.env.REACT_APP_API +'nhanvien',input,header)
+            axios.post(process.env.REACT_APP_API +'nhanvien',input)
             .then(res => {
                 alert('Thêm nhân viên thành công !!!')
-                axios.get(process.env.REACT_APP_API+'nhanvien/',header)
+                axios.get(process.env.REACT_APP_API+'nhanvien/')
                 .then(response => setnhanvien(response.data))
                 .catch(erro => console.log(erro))
                 setOn(false)

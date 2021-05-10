@@ -5,15 +5,10 @@ function Donhang_workplace
 ({slide}){
     const [on,setOn] = useState(false)
     const [input,setInput] = useState({})
-    const header = {
-        headers: {
-            Authorization: 'Bearer ' + window.localStorage.getItem('jwt') //the token is a variable which holds the token
-          }
-    }
     const [donhang,setDonhang] = useState([]);
     const [search,setSearch] = useState('')
     useEffect(()=>{
-        axios.get(process.env.REACT_APP_API+'donhang/',header)
+        axios.get(process.env.REACT_APP_API+'donhang/')
         .then(response => setDonhang(response.data))
         .catch(erro => console.log(erro))
     },[])
@@ -21,10 +16,10 @@ function Donhang_workplace
         let agree = window.confirm(`Bạn có muốn xóa madh = ${madh}?`);
         if (!agree)
         return
-        axios.delete(process.env.REACT_APP_API+'donhang/'+madh,header)
+        axios.delete(process.env.REACT_APP_API+'donhang/'+madh)
         .then(response => {
             
-            axios.get(process.env.REACT_APP_API+'donhang/',header)
+            axios.get(process.env.REACT_APP_API+'donhang/')
             .then(response => {
                 setDonhang(response.data)
                 alert("Xóa thành công !!!")

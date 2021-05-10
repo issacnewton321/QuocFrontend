@@ -10,11 +10,6 @@ export default function Cart(){
     const [user,setUser] = useState({});
     const [total,setTotal] =useState(0)
     const history = useHistory();
-    const header = {
-        headers: {
-            Authorization: 'Bearer ' + window.localStorage.getItem('jwt') //the token is a variable which holds the token
-          }
-      }
       const [cart,setCart] = useState([])
       const [sanpham,setSanpham] = useState([])
       let username = myStorage.getItem('username')
@@ -23,10 +18,10 @@ export default function Cart(){
             history.push('/login')
         
           else {
-            axios.get(process.env.REACT_APP_API +'khachhang/'+username,header)
+            axios.get(process.env.REACT_APP_API +'khachhang/'+username)
             .then(response => {
                 setUser(response.data)
-                axios.get(process.env.REACT_APP_API+`giohang/${response.data.makh}`,header)
+                axios.get(process.env.REACT_APP_API+`giohang/${response.data.makh}`)
                 .then(response => setCart(response.data))
                 .catch(erro =>console.log(erro))
                 
@@ -47,9 +42,9 @@ export default function Cart(){
                 return sp
         }))
 
-        axios.delete(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}`,header)
+        axios.delete(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}`)
         .then(response => 
-            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`,header)
+            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`)
             .then(response => setCart(response.data))
             .catch(erro =>console.log(erro))    
         )
@@ -71,9 +66,9 @@ export default function Cart(){
         })
         setSanpham(newSP)
 
-        axios.get(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}?soluong=${num}`,header)
+        axios.get(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}?soluong=${num}`)
         .then(res =>{
-            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`,header)
+            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`)
                 .then(response => setCart(response.data))
                 .catch(erro =>console.log(erro))
         })
@@ -125,13 +120,13 @@ export default function Cart(){
                 });
         }
       const order = ()=>{
-        axios.post(process.env.REACT_APP_API+`donhang/${user.makh}`,sanpham,header)
+        axios.post(process.env.REACT_APP_API+`donhang/${user.makh}`,sanpham)
         .then(res => {
             alert('Đặt hàng thành công'); 
             const myMessage = myEmail
             sendEmail(myMessage);
             setSanpham([]);
-            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`,header)
+            axios.get(process.env.REACT_APP_API+`giohang/${user.makh}`)
             .then(response => setCart(response.data))
             .catch(erro =>console.log(erro))    })
         .catch(err => alert('Đặt hàng thất bại'))

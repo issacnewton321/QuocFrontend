@@ -19,11 +19,6 @@ function Topbar(){
     const myStore = window.localStorage;
     const [open,setOpen] = useState(false)
     const jwt = myStore.getItem('jwt')
-    const header = {
-        headers: {
-            Authorization: 'Bearer ' + jwt //the token is a variable which holds the token
-          }
-    }
     const username = myStore.getItem('username')
     const initialUserUpdate = (data)=>{
         setUserUpdate({
@@ -39,7 +34,7 @@ function Topbar(){
     }
     useEffect(()=>{
         if(username)
-        axios.get(process.env.REACT_APP_API +'khachhang/'+username,header)
+        axios.get(process.env.REACT_APP_API +'khachhang/'+username)
         .then(response => {setUser(response.data) ; initialUserUpdate(response.data)})
         .catch(error => console.log(error))
     },[])
@@ -79,7 +74,7 @@ function Topbar(){
         })
     }
     const submitUpdate = ()=>{
-        axios.put(process.env.REACT_APP_API +'khachhang/',userUpdate,header)
+        axios.put(process.env.REACT_APP_API +'khachhang/',userUpdate)
         .then(response => alert('Sửa thành công'))
         .catch(error => console.log(error))
     }

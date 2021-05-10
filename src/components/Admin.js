@@ -58,7 +58,7 @@ function Admin(){
         <div>
             <div className='header-admin'>       
                 <h3 className="logo-admin"><span className="slide-button" onClick={toggleSlide}><i className="fa fa-bars" aria-hidden="true"></i></span>Quản lý kho <span className="logo-name">FAS ENTERPRISE</span></h3>
-                <p onClick={()=>{myStore.removeItem('user'); myStore.removeItem('jwt') ; history.push("/")}} className="logout"><i className="fa fa-sign-out" aria-hidden="true"></i>Đăng xuất</p>
+                <p onClick={()=>{myStore.removeItem('username') ; history.push("/")}} className="logout"><i className="fa fa-sign-out" aria-hidden="true"></i>Đăng xuất</p>
             </div>
             <div className='body-admin'>
                 <div className={slide?"slide-bar":'slide-bar on-off'}  >

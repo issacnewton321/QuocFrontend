@@ -18,23 +18,18 @@ function Login(){
         //console.log(login)
     }
     const handleSubmit = ()=>{
-        axios.post(process.env.REACT_APP_API +'authenticate',login)
+        axios.post(process.env.REACT_APP_API +'login',login)
         .then(response => {
-            myStorage.setItem('jwt',response.data.jwt)
+            console.log(response.data)
             myStorage.setItem('username',login.username)
-            axios.get(process.env.REACT_APP_API +'quyen/'+login.username,{headers:{authorization: 'Bearer ' + response.data.jwt}})
-            .then(res => {
-                let quyen = res.data;
-                console.log(quyen)
-                myStorage.setItem('quyen',quyen)
-                if(quyen == 1)
-                    history.push('/admin/index')
-                else if(quyen == 2)
-                    history.push('/')
-                else if(quyen == 3)
-                history.push('/nhanvien/index')
-            })
-            .catch(err =>{})
+            let quyen = response.data.quyen.maquyen;
+            myStorage.setItem('quyen',quyen)
+            if(quyen == 1)
+                history.push('/admin/index')
+            else if(quyen == 2)
+                history.push('/')
+            else if(quyen == 3)
+            history.push('/nhanvien/index')
             
         })
         .catch(erro => alert('login thất bại !!!'))

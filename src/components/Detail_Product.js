@@ -24,23 +24,18 @@ function Detail_Product(){
         .then(response => setSanpham(response.data) )
         .catch(erro => console.log(erro))
 
-        axios.get(process.env.REACT_APP_API +'khachhang/'+username,header)
+        axios.get(process.env.REACT_APP_API +'khachhang/'+username)
         .then(response => setUser(response.data))
         .catch(error => console.log(error))
     },[])
     let myStorage = window.localStorage;
-    const header = {
-        headers: {
-            Authorization: 'Bearer ' + window.localStorage.getItem('jwt') //the token is a variable which holds the token
-        }
-    }
     const addCart = (masp)=>{
         console.log(masp + sl)
         if(username == null){
         history.push('/login');
         }
         else{
-        axios.post(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}?soluong=${sl}`,{},header)
+        axios.post(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}?soluong=${sl}`,{})
         .then(Response => alert('Thêm thành công !!!'))
         .catch(error => {alert('Thêm thất bại ' + error);console.log(error)})
         }

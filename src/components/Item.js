@@ -15,14 +15,9 @@ export default function Item ({product}){
   const [user,setUser] = useState({})
   let username = myStorage.getItem('username')
 
-  const header = {
-    headers: {
-        Authorization: 'Bearer ' + window.localStorage.getItem('jwt') //the token is a variable which holds the token
-      }
-  }
   useEffect(()=>{
     if(username)
-    axios.get(process.env.REACT_APP_API +'khachhang/'+username,header)
+    axios.get(process.env.REACT_APP_API +'khachhang/'+username)
     .then(response => setUser(response.data))
   },[])
   const addCart = (masp)=>{
@@ -30,7 +25,7 @@ export default function Item ({product}){
       history.push('/login');
     }
     else{
-      axios.post(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}?soluong=1`,{},header)
+      axios.post(process.env.REACT_APP_API+`giohang/${user.makh}/${masp}?soluong=1`,{})
     .then(Response => alert('Thêm thành công !!!'))
     .catch(error => {alert('Thêm thất bại ' + error);console.log(error)})
     }
