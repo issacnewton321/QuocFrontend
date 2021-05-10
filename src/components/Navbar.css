@@ -2,8 +2,8 @@
     margin-right: 40px;
 }
 .search{
-    width: 36%;
-    margin-left: 10px;
+    width: 25%;
+    margin-left: 100px;
 }
 .logo{
     width: 40px;
@@ -19,7 +19,7 @@
     background-color: #c7c7c7;
     top: 50px;
     border-radius: 10px;
-    height: 400px;    
+    max-height: 400px;    
     overflow: scroll;
 }
 

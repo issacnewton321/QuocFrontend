@@ -31,7 +31,7 @@ export default function ItemList (){
 
     return (
         <div className='my-carousel mt-4'>
-            <h3 className='list-item__header'>DANH SÁCH HOA LÃNG MẠN</h3>
+            <h3 className='list-item__header'>DANH SÁCH MÓN ĂN</h3>
             <div className='row text-center'>
                 {products.map(product=>{
                     return (
@@ -41,19 +41,6 @@ export default function ItemList (){
                     )
                 })}
             </div>
-            <nav aria-label="Page navigation example ">
-              <ul className="pagination justify-content-center mt-4">
-                <li className="page-item disabled">
-                  <a className="page-link" to="/#" tabIndex={-1}>Previous</a>
-                </li>
-                <li className="page-item"><a className="page-link" to="/#">1</a></li>
-                <li className="page-item"><a className="page-link" to="/#">2</a></li>
-                <li className="page-item"><a className="page-link" to="/#">3</a></li>
-                <li className="page-item">
-                  <a className="page-link" to="/#">Next</a>
-                </li>
-              </ul>
-            </nav>
             
         </div>
     )

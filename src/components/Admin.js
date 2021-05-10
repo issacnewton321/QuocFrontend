@@ -34,7 +34,7 @@ function Admin(){
             break;
         }
         case 'index':{
-            Page = <div style={{maxWidth:'85%',height:'92vh'}}><img src="https://i.pinimg.com/originals/3b/8a/d2/3b8ad2c7b1be2caf24321c852103598a.jpg" alt="picture" style={{width:'100%',height:'100%',overflowY:'hidden'}}/></div>
+            Page = <div style={{maxWidth:'85%',height:'92vh'}}><img src="https://wallpaperaccess.com/full/825322.jpg" alt="picture" style={{width:'100%',height:'100%',overflowY:'hidden'}}/></div>
             break;
         }
         case 'danhmuc':{
@@ -57,16 +57,16 @@ function Admin(){
     return(
         <div>
             <div className='header-admin'>       
-                <h3 className="logo-admin"><span className="slide-button" onClick={toggleSlide}><i className="fa fa-bars" aria-hidden="true"></i></span>Quản lý kho <span className="logo-name">FAS ENTERPRISE</span></h3>
+                <h3 className="logo-admin"><span className="slide-button" onClick={toggleSlide}><i className="fa fa-bars" aria-hidden="true"></i></span>TRANG QUẢN TRỊ</h3>
                 <p onClick={()=>{myStore.removeItem('username') ; history.push("/")}} className="logout"><i className="fa fa-sign-out" aria-hidden="true"></i>Đăng xuất</p>
             </div>
             <div className='body-admin'>
                 <div className={slide?"slide-bar":'slide-bar on-off'}  >
                     <div className={slide?"employee":"employee on-off-employee"}>
                         <div className="employee-image">
-                            <i className="fa fa-user-circle" aria-hidden="true"></i>
+                            <img style={{width:'250px'}} src="https://scontent.fsgn1-1.fna.fbcdn.net/v/t1.18169-9/13900235_702741596543556_2970957999726811456_n.jpg?_nc_cat=106&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=7bPiGJwFTWkAX_UdOhE&_nc_ht=scontent.fsgn1-1.fna&oh=faeee7aaeb0f7efe00e696e7bdf5bfd2&oe=60BFE964"/>
                         </div>
-                        <h4 className="employee-name">Trần Hồng Quân</h4>
+                        <h4 className="employee-name">ADMIN</h4>
                     </div>
                     <div className={slide?"slide-bar_list":"slide-bar_list on-off-menu"}>
                         <Link to="/admin/sanpham"><p><i className="fa fa-list-alt" aria-hidden="true"></i><span className="ml-2" >Danh sách sản phẩm</span></p></Link>

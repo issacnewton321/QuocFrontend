@@ -1,6 +1,6 @@
 .header-admin{
     color: white;
-    background-color: #24689f;
+    background-color: #a89e11;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,7 +28,7 @@
     flex-direction: column;
     width: fit-content;
     height: 92vh;
-    background-color: #4369D7;
+    background-color: #c56b50;
     color: white;
     transition: 0.4s all;
 }
@@ -46,7 +46,7 @@
 }
 .slide-bar_list p:hover{
     color: white;
-    background-color: #4077a5;
+    background-color: #aca4a0;
     text-decoration: none;
 }
 .employee{

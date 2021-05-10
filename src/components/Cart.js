@@ -81,7 +81,7 @@ export default function Cart(){
                 setSanpham([...sanpham,sp])
           }
           else{
-                setSanpham(sanpham.filter(s => s !== sp))
+                setSanpham(sanpham.filter(s => s.masp !== sp.masp))
           }
           //console.log(sanpham)
       }
@@ -120,7 +120,8 @@ export default function Cart(){
                 });
         }
       const order = ()=>{
-        axios.post(process.env.REACT_APP_API+`donhang/${user.makh}`,sanpham)
+        if(window.confirm('Bạn có muốn đặt hàng không ?')){
+            axios.post(process.env.REACT_APP_API+`donhang/${user.makh}`,sanpham)
         .then(res => {
             alert('Đặt hàng thành công'); 
             const myMessage = myEmail
@@ -130,6 +131,7 @@ export default function Cart(){
             .then(response => setCart(response.data))
             .catch(erro =>console.log(erro))    })
         .catch(err => alert('Đặt hàng thất bại'))
+        }
       }
       const isInList= (masp)=>{
             return sanpham.some(sp => sp.masp === masp)
@@ -179,12 +181,9 @@ export default function Cart(){
                 <h3>GIỎ HÀNG</h3>
             </div>
             <div className='container'>
-                <div className='row'>
-                    <div className='col-4'>               
-                        <Detail_Portfolio />
-                        <Detail_Portfolio />
-                    </div>
-                    <div className='col-8'>  
+                <div className='row' style={{marginBottom:100,backgroundColor:'#c1bd78',marginTop:30,borderRadius:10,height:'70vh',overflow:'scroll'}}>
+                    
+                    <div className='col-7'>  
                         <h4 className="cart-header">DANH SÁCH GIỎ HÀNG</h4>            
                         <table className="table table-border table-cart">
                             {cart.map(c=>(
@@ -197,17 +196,9 @@ export default function Cart(){
                                 </tr>
                             ))}
                         </table>
-                        <div className="cart-hr"></div>
-                        <div className="cart-total mt-4">
-                            <p>Tổng sản phẩm :</p>
-                            <p>{tongsp()}</p>
-                        </div>
-                        <div className="cart-total text-success">
-                            <h4>Tạm tính :</h4>
-                            <h4>{total} đ</h4>
-                        </div>
                         
-                        {sanpham.length>0?<button className="btn btn-success btn-lg mt-4" data-toggle="modal" data-target="#exampleModal">ORDER NOW</button>:''}
+                        
+                        {sanpham.length>0?<button onClick={order} className="btn btn-danger btn-lg mt-4" >ĐẶT HÀNG</button>:''}
                           <div className="modal fade" id="exampleModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                               <div className="modal-dialog modal-lg" role="document">
                                 <div className="modal-content">
@@ -267,6 +258,19 @@ export default function Cart(){
                                 </div>
                               </div>
                             </div>
+                    </div>
+                    <div className='col-4' style={{marginLeft:30,borderLeft:'2px solid tomato'}}>  
+                    <div className="cart-header">
+                    
+                        <div className="cart-total mt-4">
+                            <p>Tổng sản phẩm :</p>
+                            <p>{tongsp()}</p>
+                        </div>
+                        <div className="cart-total text-success">
+                            <h4>Tạm tính :</h4>
+                            <h4>{total} đ</h4>
+                        </div>
+                      </div>         
                     </div>
                 </div>
             </div>

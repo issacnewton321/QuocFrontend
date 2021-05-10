@@ -1,7 +1,26 @@
+contact-icon{
+    font-size: 100px;
+}
+.fa-facebook-square{
+    color: #0C86EE;
+}
+.fa-google-plus{
+    color: #F4511E;
+}
+.fa-twitter{
+    color: #50ABF1;
+}
+.about-name{
+    font-style: italic;
+}
+#about{
+    color: #5F5F5F;
+    margin-top: 30px;
+}
+.about-body{
+    margin-top: 20px;
+}
 .myAbout{
-    background-color:rgb(238, 238, 238);
-    padding-bottom: 40px;
-    margin-top: 130px;
-    margin-bottom: 50px;
-
+    margin-top: 30px;
+    margin-bottom: 30px;
 }

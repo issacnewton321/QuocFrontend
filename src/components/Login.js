@@ -41,29 +41,32 @@ function Login(){
                         <Detail_Portfolio />
                         <Detail_Portfolio />
                     </div> */}
-                    <div className='col-12'>               
+                    <div className='col-12'>     
+
                         <div className="login_container">
-                            <div className="login_form">
-                                <div className="login_logo">
-                                    <i className="fa fa-user-secret" aria-hidden="true"></i>
-                                </div>
-                                <h3>ĐĂNG NHẬP</h3>
-                                <div className="username">
-                                    <input type="text" name ="username" placeholder="Username" value={login.usename} onChange={alterInput} required/>
-                                </div>
-                                <div className="password">
-                                    <input type="password" name ="password" placeholder="Password" value={login.password} onChange={alterInput} required/>
-                                </div>
-                                <div className="info">
-                                    <Link to="/register"><a>Tạo tài khoản</a><br    /></Link>
-                                    <a href="#">Quên mật khẩu ?</a>
-                                </div>
-                                <div className="submit" type="submit">
-                                    <button onClick={handleSubmit}>Submit</button>
+                                <div className="login-ct">
+
+                                <div className="col-md-6 m-auto">
+                                <form>
+                                    <div className="form-group">
+                                    <label htmlFor="email" style={{color:'tomato',fontSize:'25px'}}>TÀI KHOẢN</label>
+                                    <input type="email" name="username" className="form-control" id="email" aria-describedby="emailHelp" onChange={alterInput} placeholder="Nhập tài khoản" />
+                                    </div>
+                                    <div className="form-group">
+                                    <label htmlFor="password" style={{color:'tomato',fontSize:'25px'}}>MẬT KHẨU</label>
+                                    <input type="password" name="password" className="form-control" id="password" onChange={alterInput} placeholder="Nhập mật khẩu" />
+                                    </div>
+                                    <a href ="/register">Tạo tài khoản</a>
+                                    <button onClick={handleSubmit} type="submit" className="btn btn-primary float-right">
+                                    Đăng nhập
+                                    </button>
+                                </form>
                                 </div>
                             </div>
+
+                                </div>
+                            
                         </div>
-                    </div>
                 </div>
             </div>
     )

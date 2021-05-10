@@ -139,15 +139,13 @@ function Admin_workplace({slide}){
     }
     return(
         <div className={slide?"workplace":"on-off-workplace"}>
-                <h3 className={!on?"form-head":"d-none"}>DANH SÁCH SẢN PHẨM</h3>  
-                <ul className={!on?"form-func":"d-none"}>
-                        <li className="setting_form"><i className="fa fa-cogs" aria-hidden="true"></i></li>
-                        <li className="add_form" onClick={()=>getInsertSP()}><i className="fa fa-plus-square-o" aria-hidden="true"></i>ADD</li>
-                        <li className="find_form_li"><i className="fa fa-search" aria-hidden="true"></i> <input type="text" className = "find_form" onChange={handleSearch}/> </li>
+                <h3 className={!on?"form-head":"d-none"}></h3>  
+                <ul className={!on?"":"d-none"} style={{listStyle:'none'}}>
+                        <li className="" onClick={()=>getInsertSP()}><button className="btn btn-outline-info"><i className="fa fa-plus-square-o" aria-hidden="true"></i>ADD</button></li>
                 </ul>
                 <div className={!on?"workplace_display":"d-none"}>
                     <table className="table table-striped table-bordered table-hover">
-                        <thead className="thead-success">
+                        <thead className="thead">
                             <tr>
                                 <th>MÃ SẢN PHẨM</th>
                                 <th>TÊN SẢN PHẨM</th>
@@ -157,7 +155,7 @@ function Admin_workplace({slide}){
                                 <th>DANH MỤC</th>
                                 <th>DELETE</th>
                                 <th>UPDATE</th>
-                                <th>DETAIL</th>
+                                <th>HÌNH ẢNH</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -176,9 +174,7 @@ function Admin_workplace({slide}){
                                     <td className="custom"><p className="custom-link" onClick={()=> getDeleteSP(product.masp)}>Delete</p> </td>
                                     <td className="custom"><p className="custom-link" onClick={()=> getUpdateSP(product)}>Update</p> </td>
                                     <td>
-                                        <button type="button" className="btn btn-primary" data-toggle="modal" data-target={target}>
-                                            Show
-                                        </button>
+                                    <img src={product.photo} alt="hoa picture" style={{width:"100px"}}/>
                                     </td>
                                     
 

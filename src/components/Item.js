@@ -31,18 +31,18 @@ export default function Item ({product}){
     }
   }
     return (
-          <div className='myItem'>
-            <div className="card" style={{width: '18rem'}}>
-              <div className="card" style={{width: '18rem'}} onClick={()=> window.location.href="/product/"+product.masp}>
-                <div className="image"><img className="card-img-top" src={product.photo} alt="profile"/></div>
-                <div className="card-body my-card-body" >
-                  <h5 className="card-title">{product.tensp}</h5>
-                  <p className="card-text" style={{height:'55px',overflowY:'hidden',textOverflow:'ellipsis'}}>{product.mota_ngan}</p>
-                  <p className="card-text text-danger">{product.dongia} $</p>
+          <div className='myItem' style={{width:'80%'}}>
+            <div>
+              <div onClick={()=> window.location.href="/product/"+product.masp}>
+                <div className="image"><img className="card-img-top" style={{width:'100%',height:'200px'}} src={product.photo} alt="profile"/></div>
+                <div className="mt-4">
+                  <h5>{product.tensp}</h5>
+                  <p>{product.mota_ngan}</p>
+                  <p className="text-danger">{product.dongia} $</p>
                   
                 </div>
               </div>
-              <button className='btn-addCart' onClick={()=>addCart(product.masp)}>THÊM GIỎ HÀNG</button>
+              <button className='btn btn-info' onClick={()=>addCart(product.masp)}>THÊM GIỎ HÀNG</button>
             </div>
             
         </div>

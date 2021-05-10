@@ -14,6 +14,7 @@ import Register from './components/Register'
 import Activate from './components/Activate'
 import Nhanvien from './components/Nhanvien'
 import {UserProvider} from './context/UserContext'
+import ViewOrder from './components/ViewOrder'
 import {
   BrowserRouter as Router,
   Switch,
@@ -42,7 +43,6 @@ function App() {
           <Carousel />
           <ItemList />
           <About />
-          <Commit />
           <Bottom />
           
         </Route>
@@ -50,6 +50,13 @@ function App() {
           <Header />
           <Carousel />
           <ItemList />
+          <About />
+          <Bottom />
+          
+        </Route>
+        <Route path="/viewOrder" exact>
+          <Header />
+          <ViewOrder />
           <About />
           <Commit />
           <Bottom />
@@ -59,21 +66,18 @@ function App() {
          <Header />
           <Detail />
           <About />
-          <Commit />
           <Bottom />
         </Route>
         <Route path="/cart" exact>
           <Header />
           <Cart /> 
           <About />
-          <Commit />
           <Bottom />
         </Route>
         <Route path="/login" exact>
           <Header />
           <Login />
           <About />
-          <Commit />
           <Bottom />
           
         </Route>
@@ -81,7 +85,6 @@ function App() {
           <Header />
           <Activate />
           <About />
-          <Commit />
           <Bottom />
           
         </Route>
@@ -89,7 +92,6 @@ function App() {
           <Header />
           <Register />
           <About />
-          <Commit />
           <Bottom />
           
         </Route>

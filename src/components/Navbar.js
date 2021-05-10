@@ -33,20 +33,19 @@ function Navbar(){
     }
     return(
       
-       <nav className="navbar navbar-expand-lg navbar-light bg-light">
+       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
          <a className="navbar-brand d-block d-sm-none" to="/#">
             <img src={logo} className='logo'/>
          </a>
          <Link to='/'>
           <a className="navbar-brand d-none d-sm-block" to="/#">
-              <img src={logo} className='logo'/>
-              FLOWERS AND SEEDS
+              FASTFOOD
           </a>
          </Link>
         <form className='search input-group ' onFocus={()=>setIsSearch(true)} onBlur={()=>setIsSearch(false)}>
             <input className='form-control' placeholder='Nhập để tìm kiếm . . .' onChange={handleSearch} />
             <div className="input-group-append">
-                <button className='btn btn-success'><i className="fa fa-search" aria-hidden="true"></i></button>
+                <button className='btn btn-warning'><i className="fa fa-search" aria-hidden="true"></i></button>
             </div>
             {isSearch?
               <div className="searchBox">
@@ -59,7 +58,7 @@ function Navbar(){
                       <tr key={sp.masp} onMouseDown={()=> window.location.href="/product/"+sp.masp}  >
                           <td>{sp.masp}</td>
                           <td>{sp.tensp}</td>
-                          <td><img alt="pr" src={sp.photo} style={{width:70}}/></td>
+                          <td>{sp.soluong}</td>
                           <td>{sp.dongia}</td>
                       </tr>
                     )
@@ -90,10 +89,10 @@ function Navbar(){
                             </div>
                    </li>
                    <li className="nav-item">
-                     <a className='nav-link'>LIÊN HỆ</a>
+                     <a className='nav-link'>THÔNG TIN</a>
                    </li>
                    <li className="nav-item">
-                     <a className='nav-link'>TÌM HIỂU</a>
+                     <a className='nav-link'>LIÊN HỆ</a>
                    </li>
                  </ul>
                  

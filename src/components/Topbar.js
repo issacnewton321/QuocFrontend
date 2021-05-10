@@ -46,7 +46,7 @@ function Topbar(){
                     {open?
                         <div class="myAccount" style={{zIndex:1}}>
                             <p data-toggle="modal" data-target="#accountInfo"><i class="fa fa-user" aria-hidden="true"></i> Thông tin tài khoản</p>
-                            <p><i class="fa fa-shopping-bag" aria-hidden="true"></i> Đơn hàng của tôi</p>
+                            <p onClick={()=> history.push('/viewOrder')}><i class="fa fa-shopping-bag" aria-hidden="true"></i> Đơn hàng của tôi</p>
                         </div> :''  
                      }
                 </div>
@@ -87,15 +87,13 @@ function Topbar(){
             <div className='d-none d-sm-block'>
                 <div className='topbar d-flex justify-content-around'>
                     <div className='topbar__contact d-flex'>              
-                        <p className='mr-3'>Hongquan080799@gmail.com</p>
-                        <p>0336781801</p>
+                        <p>Công ty thực phẩm đồ ăn nhanh phúc đồng</p>
                     </div>
                     <div className='topbar__more d-flex'>
                         {isLogin()}
                         <Link to='/cart'>
-                         <p className="cart item mr-3"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"></i><span className='index'>1</span> Giỏ hàng</p>
+                         <p className="cart item mr-3"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"></i> Giỏ hàng</p>
                         </Link>
-                        <p className="login item"><i className="fa fa-bell fa-lg"></i><span className='index'>1</span> Thông báo</p>
                         {isLogout()}
                     </div>
                 </div>
@@ -103,21 +101,19 @@ function Topbar(){
             <div className='d-block d-sm-none'>
                 <div className='topbar d-flex justify-content-around'>
                     <div className='topbar__contact d-flex'>              
-                        <p className='mr-3'>Hongquan080799@gmail.com</p>
-                        <p>0336781801</p>
+                    <p>Công ty thực phẩm đồ ăn nhanh phúc đồng</p>
                     </div>
                     <div className='topbar__more d-flex'>
                          <p className="login item mr-3"><i className="fa fa-user-circle fa-lg" aria-hidden="true"></i></p>
-                        <p className="cart item mr-3"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"></i><span className='index'>1</span></p>
-                        <p className="login item"><i className="fa fa-bell fa-lg"></i><span className='index'>1</span></p>
+                        <p className="cart item mr-3"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"></i></p>
                     </div>
                 </div>
             </div>
             {/* modal */}
             <div className="modal fade" id="accountInfo" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog modal-lg" role="document">
+                <div className="modal-dialog modal-xl" role="document">
                   <div className="modal-content">
-                    <div className="modal-header">
+                    <div className="modal-header bg-warning text-white">
                       <h5 className="modal-title" id="exampleModalLabel">THÔNG TIN TÀI KHOẢN</h5>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
@@ -126,7 +122,8 @@ function Topbar(){
                     
                     <div className="modal-body">
                         <h5>Thông tin về khách hàng : {user?.ho + ' ' + user?.ten}</h5>
-                      <div className="table-responsive">
+                    <div className="row">
+                    <div className=" col-6">
                       <table className="table table-borderless table-font mt-4">
                         <tbody>
                           <tr>
@@ -150,7 +147,16 @@ function Topbar(){
                             <td>Số điện thoại</td>
                             <td><input type="text" className="form-control mb-2 mr-sm-2" defaultValue={user?.sdt} name="sdt" onChange={handleChange}/></td>
                           </tr>
-                          <tr>
+                          
+                        </tbody>
+                      </table>
+                      
+                      
+                      </div>
+                      <div className="col-6">  
+                      <table className="table table-borderless table-font mt-4">
+                        <tbody>
+                        <tr>
                             <td>Email</td>
                             <td><input type="text" className="form-control mb-2 mr-sm-2" defaultValue={user?.email} name="email" onChange={handleChange}/></td>
                           </tr>
@@ -169,12 +175,12 @@ function Topbar(){
                         </tbody>
                       </table>
                       </div>
-                      
+                    </div>
             
                     </div>
                     <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={()=>initialUserUpdate(user)}>Thoát</button>
-                      <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={submitUpdate}>Lưu thay đổi</button>
+                      <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={()=>initialUserUpdate(user)}>Thoát</button>
+                      <button type="button" className="btn btn-warning" data-dismiss="modal" onClick={submitUpdate}>Lưu thay đổi</button>
                     </div>
                   </div>
                 </div>
